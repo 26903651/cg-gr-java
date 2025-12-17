@@ -1,10 +1,8 @@
 package org.graphrag;
 
-import org.graphrag.index.typing.DocumentChunk;
-import org.graphrag.index.typing.TextUnit;
 import org.graphrag.model.GraphDocument;
-import org.graphrag.model.Relationship;
-import org.graphrag.model.Entity;
+import org.graphrag.model.GraphEdge;
+import org.graphrag.model.GraphNode;
 
 /**
  * Abstraction over the graph storage layer. The Python code supports multiple
@@ -14,25 +12,22 @@ import org.graphrag.model.Entity;
 public interface GraphStore {
     /**
      * Ingests raw documents into the graph. The Python reference extracts
-     * entities and builds relationships during ingestion; this method is the
-     * Java counterpart where implementers can mirror that behavior.
+     * entities and builds edges during ingestion; this method is the Java
+     * counterpart where implementers can mirror that behavior.
      */
     void ingest(GraphRagConfig config, Iterable<GraphDocument> documents);
 
     /**
      * Extended ingestion hook used by the {@code index} pipeline to persist
-     * precomputed graph artifacts (documents, chunks, text units, entities, and
-     * relationships). Implementers should accept the supplied artifacts as
-     * authoritative when provided, falling back to on-the-fly extraction if
-     * desired.
-    */
+     * precomputed graph artifacts (documents, nodes, and edges). Implementers
+     * should accept the supplied nodes and edges as authoritative when
+     * provided, falling back to on-the-fly extraction if desired.
+     */
     default void ingestArtifacts(
             GraphRagConfig config,
             Iterable<GraphDocument> documents,
-            Iterable<DocumentChunk> chunks,
-            Iterable<TextUnit> textUnits,
-            Iterable<Entity> entities,
-            Iterable<Relationship> relationships) {
+            Iterable<GraphNode> nodes,
+            Iterable<GraphEdge> edges) {
         ingest(config, documents);
     }
 

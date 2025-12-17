@@ -21,12 +21,6 @@ public class IndexUpdater {
 
     public void apply(GraphArtifacts artifacts) {
         Objects.requireNonNull(artifacts, "artifacts");
-        graphStore.ingestArtifacts(
-                config,
-                artifacts.documents(),
-                artifacts.chunks(),
-                artifacts.textUnits(),
-                artifacts.entities(),
-                artifacts.relationships());
+        graphStore.ingestArtifacts(config, artifacts.documents(), artifacts.nodes(), artifacts.edges());
     }
 }

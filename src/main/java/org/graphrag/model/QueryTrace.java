@@ -11,13 +11,13 @@ import java.util.Objects;
 public final class QueryTrace {
     private final String question;
     private final List<String> matchedDocumentIds;
-    private final List<String> traversedEntityIds;
+    private final List<String> traversedNodeIds;
     private final Instant executedAt;
 
-    public QueryTrace(String question, List<String> matchedDocumentIds, List<String> traversedEntityIds, Instant executedAt) {
+    public QueryTrace(String question, List<String> matchedDocumentIds, List<String> traversedNodeIds, Instant executedAt) {
         this.question = Objects.requireNonNull(question, "question");
         this.matchedDocumentIds = List.copyOf(matchedDocumentIds);
-        this.traversedEntityIds = List.copyOf(traversedEntityIds);
+        this.traversedNodeIds = List.copyOf(traversedNodeIds);
         this.executedAt = Objects.requireNonNull(executedAt, "executedAt");
     }
 
@@ -29,8 +29,8 @@ public final class QueryTrace {
         return matchedDocumentIds;
     }
 
-    public List<String> traversedEntityIds() {
-        return traversedEntityIds;
+    public List<String> traversedNodeIds() {
+        return traversedNodeIds;
     }
 
     public Instant executedAt() {

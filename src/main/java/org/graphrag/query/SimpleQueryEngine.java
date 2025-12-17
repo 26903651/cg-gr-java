@@ -12,7 +12,7 @@ import org.graphrag.GraphContext;
 import org.graphrag.QueryEngine;
 import org.graphrag.QueryResult;
 import org.graphrag.model.GraphDocument;
-import org.graphrag.model.Entity;
+import org.graphrag.model.GraphNode;
 import org.graphrag.model.QueryTrace;
 
 /**
@@ -42,8 +42,8 @@ public class SimpleQueryEngine implements QueryEngine {
                 .limit(maxDocuments)
                 .toList();
 
-        Map<String, Double> relevancy = context.entityRelevancy();
-        List<Entity> traversedEntities = context.entities().stream()
+        Map<String, Double> relevancy = context.nodeRelevancy();
+        List<GraphNode> traversedNodes = context.nodes().stream()
                 .sorted((a, b) -> Double.compare(relevancy.getOrDefault(b.id(), 0d), relevancy.getOrDefault(a.id(), 0d)))
                 .limit(maxDocuments)
                 .toList();
@@ -60,7 +60,7 @@ public class SimpleQueryEngine implements QueryEngine {
         QueryTrace trace = new QueryTrace(
                 question,
                 matchingDocuments.stream().map(GraphDocument::id).collect(Collectors.toList()),
-                traversedEntities.stream().map(Entity::id).collect(Collectors.toList()),
+                traversedNodes.stream().map(GraphNode::id).collect(Collectors.toList()),
                 Instant.now());
 
         return new QueryResult(synthesized, trace, Instant.now());
